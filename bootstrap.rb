@@ -50,3 +50,16 @@ run 'rm README.rdoc'
 generate 'simple_form:install --bootstrap'
 
 generate 'rspec:install'
+
+gsub_file 'config/database.yml', /  username: \S+\n  password:\n/, ''
+
+if yes? 'Is postgres running?'
+ rake 'db:create db:migrate'
+end
+
+route 'root to: "application#show"'
+
+# Git
+git :init
+git add: "."
+git commit: "-a -m 'F1 Prototype'"
