@@ -44,3 +44,9 @@ group :test do
 end
 
 run 'bundle install'
+
+run 'rm README.rdoc'
+
+generate 'simple_form:install --bootstrap'
+
+generate 'rspec:install'
