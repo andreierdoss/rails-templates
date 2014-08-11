@@ -21,17 +21,17 @@ gem 'awesome_print', '~> 1.2.0'
 
 gem 'rails_12factor', '~> 0.0.2', group: :production
 
-group :development, :test do
+gem_group :development, :test do
   gem 'pry-debugger', '~> 0.2.3'
   gem 'rspec-rails', '~> 3.0.2'
 end
 
-group :development do
+gem_group :development do
   gem 'spring', '~> 1.1.3'
   gem 'spring-commands-rspec', '~> 1.0.2'
 end
 
-group :test do
+gem_group :test do
   gem 'minitest', '~> 5.4.0'
   gem 'shoulda-matchers', '~> 2.6.2'
   gem 'factory_girl_rails', '~> 4.4.1'
