@@ -1,13 +1,16 @@
-inject_into_file 'Gemfile', after: "source 'https://rubygems.org'\n" do
-  "ruby File.read '.ruby-version'\n\n"
-end
+source_paths << File.dirname(__FILE__)
 
-file '.ruby-version', '2.1.0'
+run 'cat /dev/null > Gemfile'
+add_source "https://rubygems.org"
+
+inject_into_file 'Gemfile', after: 'source "https://rubygems.org"' do
+  "\nruby File.read '.ruby-version'\n"
+end
+file '.ruby-version', '2.1.1'
 
 gem 'rails', '4.1.4'
 gem 'thin', '~> 1.6.2'
 gem 'pg', '~> 0.17.1'
-
 gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
@@ -16,9 +19,7 @@ gem 'turbolinks'
 gem 'bootstrap-sass', '~> 3.2.0.0'
 gem 'autoprefixer-rails', '~> 2.1.1.20140710'
 gem 'simple_form', '~> 3.0.2'
-
 gem 'awesome_print', '~> 1.2.0'
-
 gem 'rails_12factor', '~> 0.0.2', group: :production
 
 gem_group :development, :test do
@@ -37,16 +38,16 @@ gem_group :test do
   gem 'factory_girl_rails', '~> 4.4.1'
   gem 'capybara-webkit', '~> 1.2.0'
   gem 'selenium-webdriver', '~> 2.42.0'
-  gem 'capybara-email', '~> 2.4.0'
+  # gem 'capybara-email', '~> 2.4.0'
   gem 'database_cleaner', '~> 1.3.0'
   gem 'launchy', '~> 2.4.2'
   gem 'json_spec', '~> 1.1.2'
 end
 
-run 'bundle install'
-
-run 'rm README.rdoc'
 run 'rm app/views/layouts/application.html.erb'
+run 'rm app/assets/stylesheets/application.css'
+run 'rm app/assets/javascripts/application.js'
+run 'rm README.rdoc'
 
 generate 'simple_form:install --bootstrap'
 generate 'rspec:install'
@@ -57,9 +58,9 @@ copy_file 'bootstrap/application.js', 'app/assets/javascripts/application.js'
 copy_file 'bootstrap/capybara_helper.rb', 'spec/support/capybara_helper.rb'
 copy_file 'bootstrap/database_cleaner_helper.rb', 'spec/support/database_cleaner_helper.rb'
 copy_file 'bootstrap/deferred_gc.rb', 'spec/support/deferred_gc.rb'
+run 'rm spec/rails_helper.rb'
 copy_file 'bootstrap/rails_helper.rb', 'spec/rails_helper.rb'
-
-gsub_file 'config/database.yml', /  username: \S+\n  password:\n/, ''
+file 'spec/factories.rb', ''
 
 if yes? 'Is postgres running?'
  rake 'db:create db:migrate'
@@ -70,4 +71,4 @@ route 'root to: "application#show"'
 # Git
 git :init
 git add: "."
-git commit: "-a -m 'F1 Prototype'"
+git commit: "-a -m 'Application bootstraped'"
