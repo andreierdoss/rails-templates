@@ -46,10 +46,18 @@ end
 run 'bundle install'
 
 run 'rm README.rdoc'
+run 'rm app/views/layouts/application.html.erb'
 
 generate 'simple_form:install --bootstrap'
-
 generate 'rspec:install'
+
+copy_file 'bootstrap/application.html.haml', 'app/views/layouts/application.html.haml'
+copy_file 'bootstrap/application.css.scss', 'app/assets/stylesheets/application.css.scss'
+copy_file 'bootstrap/application.js', 'app/assets/javascripts/application.js'
+copy_file 'bootstrap/capybara_helper.rb', 'spec/support/capybara_helper.rb'
+copy_file 'bootstrap/database_cleaner_helper.rb', 'spec/support/database_cleaner_helper.rb'
+copy_file 'bootstrap/deferred_gc.rb', 'spec/support/deferred_gc.rb'
+copy_file 'bootstrap/rails_helper.rb', 'spec/rails_helper.rb'
 
 gsub_file 'config/database.yml', /  username: \S+\n  password:\n/, ''
 
